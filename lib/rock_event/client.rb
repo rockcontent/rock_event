@@ -1,0 +1,52 @@
+module RockEvent
+  class Client
+
+    def initialize(api_key:)
+      @api_key = api_key
+    end
+
+    def track(event:, payload:, user_id:)
+      execute do
+        client.track(user_id: user_id,
+                     event: event,
+                     properties: payload,
+                     context: { traits: payload })
+      end
+    end
+
+    def identify(payload:, user_id:, anonymous_id:)
+      execute do
+        client.identify(user_id: user_id,
+                        traits: payload,
+                        anonymous_id: anonymous_id)
+      end
+    end
+
+    def group(payload:, user_id:, group_id:)
+      execute do
+        client.track(user_id: user_id,
+                     group_id: group_id,
+                     traits: payload,
+                     context: { traits: payload })
+
+      end
+    end
+
+    private
+
+    attr_reader :api_key
+
+    def execute
+      return if !connected?
+      yield if block_given?
+    end
+
+    def connected?
+      api_key.present?
+    end
+
+    def client
+      @client ||= Segment::Analytics.new({ write_key: api_key })
+    end
+  end
+end
