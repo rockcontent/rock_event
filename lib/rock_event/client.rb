@@ -2,7 +2,7 @@ module RockEvent
   class Client
 
     def initialize(api_key:)
-      @api_key = api_key
+      @api_key = api_key.to_s
     end
 
     def track(event:, payload:, user_id:)
@@ -24,7 +24,7 @@ module RockEvent
 
     def group(payload:, user_id:, group_id:)
       execute do
-        client.track(user_id: user_id,
+        client.group(user_id: user_id,
                      group_id: group_id,
                      traits: payload,
                      context: { traits: payload })
@@ -42,7 +42,7 @@ module RockEvent
     end
 
     def connected?
-      api_key.present?
+      !api_key.empty?
     end
 
     def client
