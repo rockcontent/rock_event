@@ -1,5 +1,6 @@
 require "segment/analytics"
 require_relative "rock_event/client"
+require_relative "rock_event/event"
 require "rock_event/version"
 
 module RockEvent
