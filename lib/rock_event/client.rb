@@ -7,10 +7,13 @@ module RockEvent
 
     def track(event:, payload:, user_id:)
       execute do
-        client.track(user_id: user_id,
+        a =  client.track(user_id: user_id,
                      event: event,
                      properties: payload,
                      context: { traits: payload })
+        puts "LUCAS"
+        puts a
+        a
       end
     end
 
@@ -46,7 +49,10 @@ module RockEvent
     end
 
     def client
-      @client ||= Segment::Analytics.new({ write_key: api_key })
+      @client ||= Segment::Analytics.new({
+        write_key: api_key,
+        on_error: Proc.new { |status, msg| puts msg; puts status; raise StandardError; },
+      })
     end
   end
 end
