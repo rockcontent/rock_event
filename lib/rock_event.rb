@@ -1,4 +1,4 @@
-require "segment/analytics"
+require "simple_segment"
 require_relative "rock_event/client"
 require "rock_event/version"
 

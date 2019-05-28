@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "rock_event"
 require "webmock/rspec"
+require "pry"
 require File.expand_path("./support/vcr", __dir__)
 
 WebMock.disable_net_connect!(allow_localhost: true)

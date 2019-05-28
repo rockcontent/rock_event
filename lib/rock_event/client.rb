@@ -37,8 +37,16 @@ module RockEvent
     attr_reader :api_key
 
     def execute
-      return if !connected?
-      yield if block_given?
+      if !connected? || !block_given?
+        false
+      else
+        case yield
+        when Net::HTTPSuccess
+          true
+        else
+          false
+        end
+      end
     end
 
     def connected?
@@ -46,7 +54,7 @@ module RockEvent
     end
 
     def client
-      @client ||= Segment::Analytics.new({ write_key: api_key })
+      @client ||= SimpleSegment::Client.new({ write_key: api_key })
     end
   end
 end
